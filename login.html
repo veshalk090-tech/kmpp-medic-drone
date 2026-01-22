@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMPP MEDIC DRONE AERODROP - Medicine Delivery Service</title>
+    <meta name="description" content="KMPP MEDIC DRONE AERODROP: Secure login for medicine delivery">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5ede1 0%, #ede5db 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #f9f6f2 0%, #ede5db 100%);
+            padding: 50px 30px 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: #c5a86a;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .login-header p {
+            font-size: 13px;
+            opacity: 0.95;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .login-body {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #c4b5a0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: #f9f6f2;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7a8f6e;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(122, 143, 110, 0.08);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #6b7d5b 0%, #556b4f 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(85, 107, 79, 0.25);
+            letter-spacing: 0.3px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(85, 107, 79, 0.35);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-btn.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        .loading-spinner.show {
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .footer-link a {
+            color: #7a8f6e;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .footer-link a:hover {
+            color: #5d7a55;
+            text-decoration: underline;
+        }
+
+        .demo-section {
+            background: #f9f9f9;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 25px;
+            font-size: 12px;
+        }
+
+        .demo-section h4 {
+            color: #7a8f6e;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .demo-section p {
+            margin: 6px 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .demo-section code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #7a8f6e;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .demo-section code:hover {
+            background: #e8f0e3;
+            transform: scale(1.05);
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c33;
+            border: 1px solid #ef5350;
+            border-radius: 6px;
+            padding: 11px;
+            margin-bottom: 18px;
+            display: none;
+            font-size: 13px;
+            animation: shake 0.4s ease-out;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 11px;
+            margin-bottom: 18px;
+            display: none;
+            font-size: 13px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #e0d5c7;
+            padding: 0 30px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            top: 1px;
+        }
+
+        .tab-btn.active {
+            color: #6b7d5b;
+            border-bottom-color: #6b7d5b;
+        }
+
+        .tab-btn:hover {
+            color: #7a8f6e;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: #f0f7e8;
+            border: 1px solid #d4e8c5;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 18px;
+            font-size: 12px;
+            color: #2e5c2e;
+            line-height: 1.5;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 40px 25px 35px;
+            }
+
+            .login-body {
+                padding: 30px 25px;
+            }
+
+            .logo-circle {
+                width: 70px;
+                height: 70px;
+                font-size: 40px;
+            }
+
+            .login-header h1 {
+                font-size: 22px;
+            }
+
+            .login-header p {
+                font-size: 12px;
+            }
+
+            .submit-btn {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .tabs {
+                padding: 0 25px;
+                margin-bottom: 25px;
+            }
+
+            .tab-btn {
+                padding: 13px 12px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo-circle">M</div>
+                <h1>MyHealth@KMPP</h1>
+                <p>Fascinately Login is logatz</p>
+            </div>
+
+            <div class="login-body">
+                <div id="error-message" class="error-message"></div>
+                <div id="success-message" class="success-message"></div>
+
+                <div class="tabs">
+                    <button type="button" class="tab-btn active" data-tab="staff-login">Staff Login</button>
+                    <button type="button" class="tab-btn" data-tab="student-register">Student Sign Up</button>
+                </div>
+
+                <!-- STAFF LOGIN FORM -->
+                <form id="staff-login-form" class="form-section active">
+                    <div class="form-group">
+                        <label for="staff-username">Username</label>
+                        <input 
+                            type="text" 
+                            id="staff-username" 
+                            name="username" 
+                            placeholder="e.g., nurse.siti" 
+                            required 
+                            autocomplete="username"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staff-password">Password</label>
+                        <input 
+                            type="password" 
+                            id="staff-password" 
+                            name="password" 
+                            placeholder="••••••••" 
+                            required
+                            autocomplete="current-password"
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="staff-login-btn">
+                        <span class="loading-spinner" id="staff-spinner"></span>
+                        <span>Staff Login</span>
+                    </button>
+                </form>
+
+                <!-- STUDENT REGISTRATION FORM -->
+                <form id="student-register-form" class="form-section">
+                    <div class="info-box">
+                        <strong>📝 New Student? Create your account here</strong>
+                        Your student ID and email will be verified against KMPP records
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            name="fullName" 
+                            placeholder="e.g., Muhammad Ali" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+                        <input 
+                            type="text" 
+                            id="studentId" 
+                            name="studentId" 
+                            placeholder="e.g., MK123456" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="your.email@student.kmpp.edu.my" 
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            placeholder="+60-1234-5678" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hostelAddress">Hostel Room/Address</label>
+                        <input 
+                            type="text" 
+                            id="hostelAddress" 
+                            name="hostelAddress" 
+                            placeholder="e.g., Block A, Room 101" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emergencyContact">Emergency Contact</label>
+                        <input 
+                            type="tel" 
+                            id="emergencyContact" 
+                            name="emergencyContact" 
+                            placeholder="+60-9876-5432" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="student-register-btn">
+                        <span class="loading-spinner" id="student-spinner"></span>
+                        <span>Create Account</span>
+                    </button>
+
+                    <div class="footer-link">
+                        Already registered? <a href="#" onclick="switchTab('staff-login'); return false;">Log in here</a>
+                    </div>
+                </form>
+
+                <div class="demo-section">
+                    <h4>📌 Demo Staff Accounts</h4>
+                    <p>Nurse: <code onclick="fillStaffUsername('nurse.siti')">nurse.siti</code> / <code onclick="fillStaffPassword('password123')">password123</code></p>
+                    <p>Pharmacist: <code onclick="fillStaffUsername('pharmacist.ahmad')">pharmacist.ahmad</code> / <code onclick="fillStaffPassword('password123')">password123</code></p>
+                    <p style="margin-top: 8px; border-top: 1px solid #e0e0e0; padding-top: 8px;">
+                        Or <a href="#" onclick="switchTab('student-register'); return false;">create a student account</a> to test ordering
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    <script>
+        function fillStaffUsername(username) {
+            document.getElementById('staff-username').value = username;
+            switchTab('staff-login');
+        }
+
+        function fillStaffPassword(password) {
+            document.getElementById('staff-password').value = password;
+        }
+
+        function switchTab(tabName) {
+            // Update active tab button
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update active form section
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            if (tabName === 'staff-login') {
+                document.getElementById('staff-login-form').classList.add('active');
+            } else if (tabName === 'student-register') {
+                document.getElementById('student-register-form').classList.add('active');
+            }
+        }
+
+        // Tab button listeners
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.dataset.tab);
+            });
+        });
+    </script>
+</body>
+</html>

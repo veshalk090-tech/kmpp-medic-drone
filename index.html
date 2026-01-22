@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMPP Drone Medic - Emergency Medicine Delivery</title>
+    <meta name="description" content="KMPP Drone Medic: Fast emergency medicine delivery service in Malaysia">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <h1>🛸💊 KMPP Drone Medic</h1>
+                    <div class="malaysia-logo">Emergency Medicine Delivery</div>
+                    <!-- Drone Animation -->
+                    <div class="drone-animation-container">
+                        <div class="drone-flight">
+                            <div class="drone">🛸</div>
+                        </div>
+                        <div class="delivery-point">💊</div>
+                        <div class="customer">👤</div>
+                    </div>
+                </div>
+                <div class="header-icons">                    <button id="tracker-btn" class="tracker-icon" title="Track Drones">🛸</button>
+                    <button id="contact-btn" class="contact-icon">📞</button>                    <button id="profile-btn" class="profile-icon">👤</button>
+                    <span id="cart-icon" class="cart-badge">0</span>
+                </div>
+            </div>
+            <input type="text" id="search" class="search-bar" placeholder="Search medicines...">
+        </header>
+
+        <!-- Medical Care Banner -->
+        <div class="medical-banner">
+            <span>🏥 Free Emergency Drone Medicine Delivery</span>
+            <span>⚡ Fast • Safe • Reliable</span>
+        </div>
+
+        <!-- Categories -->
+        <div class="categories">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="pain">Pain Relief</button>
+            <button class="category-btn" data-category="cold">Cold & Cough</button>
+            <button class="category-btn" data-category="vitamin">Vitamins</button>
+            <button class="category-btn" data-category="antibiotic">Antibiotics</button>
+            <button class="category-btn" data-category="diabetes">Diabetes</button>
+            <button class="category-btn" data-category="blood-pressure">Blood Pressure</button>
+        </div>
+
+        <!-- Home Section - Medicine Pickup Card -->
+        <section class="home-section">
+            <div class="location-display">
+                <h2>📍 Woneet Stred</h2>
+            </div>
+            
+            <div class="medicine-pickup-card">
+                <div class="card-header">
+                    <h3>💊 Medicine Pickup</h3>
+                    <button class="save-btn">Saved</button>
+                </div>
+                <div class="card-details">
+                    <p class="medicine-info">Paracetamol 500mg<br><small>Quick Relief Medicine</small></p>
+                </div>
+                
+                <div class="delivery-options">
+                    <div class="option">
+                        <span class="icon">📦</span>
+                        <span>Store Location</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <div class="option">
+                        <span class="icon">📋</span>
+                        <span>Order History</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <div class="option">
+                        <span class="icon">🏠</span>
+                        <span>Home Location</span>
+                        <span class="arrow">›</span>
+                    </div>
+                </div>
+                
+                <button class="start-btn" onclick="document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' })">Start</button>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section id="products-section" class="products-section">
+                <h2>Available Medicines</h2>
+                <div id="products-grid" class="products-grid"></div>
+            </section>
+        </main>
+
+        <!-- Cart Sidebar -->
+        <div id="cart-sidebar" class="cart-sidebar">
+            <div class="cart-header">
+                <h3>Your Cart</h3>
+                <button id="close-cart" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items" class="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total:</strong>
+                    <strong id="cart-total">RM0.00</strong>
+                </div>
+                <button id="checkout-btn" class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkout-modal" class="modal">
+            <div class="modal-content">
+                <h2>Checkout</h2>
+                <form id="checkout-form">
+                    <input type="text" placeholder="Full Name" id="cust-name" required>
+                    <input type="email" placeholder="Email" id="cust-email" required>
+                    <input type="tel" placeholder="Phone" id="cust-phone" required>
+                    <input type="text" placeholder="Building/Location" id="cust-location" required>
+                    <input type="text" placeholder="Room Number *" id="cust-room" required>
+                    <textarea placeholder="Special Instructions" id="cust-notes"></textarea>
+                    <button type="submit" class="confirm-btn">Confirm Order</button>
+                    <button type="button" class="cancel-btn" onclick="closeCheckout()">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Confirmation -->
+        <div id="confirmation-modal" class="modal">
+            <div class="confirmation-box">
+                <h2>✓ Order Confirmed!</h2>
+                <p id="order-details"></p>
+                <button onclick="goToOrders()" class="done-btn">View Order Status</button>
+            </div>
+        </div>
+
+        <!-- Order Tracking Modal -->
+        <div id="orders-modal" class="modal">
+            <div class="modal-content">
+                <h2>Your Orders</h2>
+                <div id="orders-list" class="orders-list"></div>
+                <button onclick="closeOrders()" class="cancel-btn">Close</button>
+            </div>
+        </div>
+
+        <!-- Profile Modal -->
+        <div id="profile-modal" class="modal">
+            <div class="modal-content">
+                <h2>My Profile</h2>
+                <div id="profile-info" class="profile-info"></div>
+                <button onclick="closeProfile()" class="cancel-btn">Close</button>
+            </div>
+        </div>
+
+        <!-- Medicine Details Modal -->
+        <div id="medicine-details-modal" class="modal medicine-details-modal">
+            <div class="modal-content medicine-details-content">
+                <div id="medicine-details-content"></div>
+            </div>
+        </div>
+
+        <!-- Contact Modal -->
+        <div id="contact-modal" class="modal">
+            <div class="modal-content">
+                <h2>Contact Us</h2>
+                <form id="contact-form">
+                    <input type="text" placeholder="Your Name" id="contact-name" required>
+                    <input type="email" placeholder="Your Email" id="contact-email" required>
+                    <input type="tel" placeholder="Your Phone" id="contact-phone">
+                    <textarea placeholder="Your Message" id="contact-message" rows="4" required></textarea>
+                    <button type="submit" class="confirm-btn">Send Message</button>
+                    <button type="button" class="cancel-btn" onclick="closeContact()">Cancel</button>
+                </form>
+                <div class="contact-info">
+                    <h3>Our Information</h3>
+                    <div class="info-item">
+                        <strong>📍 Address:</strong>
+                        <p>Kolej Matrikulasi Penang<br>Jln Pongsu Seribu, Kampung Permatang Haji Hasan<br>13200 Kepala Batas, Penang</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>📞 Phone:</strong>
+                        <p><a href="tel:+60321234567">+603-2123-4567</a><br>Available 24/7 for emergencies</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>📧 Email:</strong>
+                        <p><a href="mailto:support@aerodrop.delivery">support@aerodrop.delivery</a><br><a href="mailto:orders@aerodrop.delivery">orders@aerodrop.delivery</a></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>⏰ Hours:</strong>
+                        <p>Monday - Friday: 7PM - 12AM<br>Saturday - Sunday: 10AM - 12AM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+

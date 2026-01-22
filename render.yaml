@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: kmpp-medic-drone
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    env:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: JWT_SECRET
+        value: kmpp-drone-medic-super-secret-key-phase1-testing-12345
+      - key: JWT_EXPIRES_IN
+        value: 24h
+      - key: MONGO_URI
+        value: mongodb://localhost:27017/kmpp-drone-medic
+      - key: LOG_LEVEL
+        value: info
